@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Online Screen Recorder</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        
+        header {
+            background-color: #fff;
+            padding: 15px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #E75644;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .logo-title-free {
+            color: #E75644;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .logo-title-recorder {
+            color: #333;
+            font-weight: bold;
+            font-size: 18px;
+            line-height: 1.2;
+        }
+        
+        .logo-powered {
+            color: #777;
+            font-size: 12px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 500;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background-color: #D63B7D;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-outline {
+            color: #D63B7D;
+            border: 1px solid #D63B7D;
+            background-color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .nav-link {
+            color: #555;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .hero {
+            padding: 60px 0;
+        }
+        
+        .hero-columns {
+            display: flex;
+            gap: 40px;
+        }
+        
+        .hero-column {
+            flex: 1;
+        }
+        
+        .hero-title {
+            font-size: 40px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+        
+        .hero-description {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 25px;
+        }
+        
+        .hero-btn {
+            padding: 12px 25px;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+        
+        .browser-support {
+            color: #777;
+            font-size: 14px;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .feature-icon {
+            color: #D63B7D;
+            font-size: 20px;
+            margin-right: 10px;
+        }
+        
+        .recorder-interface {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 25px;
+            margin-top: 30px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+        
+        .recorder-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .recorder-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .recorder-option {
+            padding: 10px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        .recorder-option.selected {
+            border-color: #D63B7D;
+            background-color: rgba(214, 59, 125, 0.05);
+        }
+        
+        .option-icon {
+            margin-right: 8px;
+            color: #D63B7D;
+        }
+        
+        .recording-status {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        
+        .recording-dot {
+            width: 10px;
+            height: 10px;
+            background-color: red;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            width: 90%;
+            max-width: 400px;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-columns {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="nav">
+                <a href="#" class="logo">
+                    <div class="logo-icon"></div>
+                    <div class="logo-text">
+                        <div class="logo-title-free">FREE ONLINE</div>
+                        <div class="logo-title-recorder">Screen Recorder</div>
+                        <div class="logo-powered">Powered by Screeners.online</div>
+                    </div>
+                </a>
+                
+                <div class="nav-links">
+                    <a href="#recorder" class="nav-link">Online recorder</a>
+                    <a href="#" class="nav-link">Chrome extension</a>
+                    <a href="#" class="btn btn-outline">Upgrade</a>
+                    <a href="#" class="btn btn-primary">Sign up</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-columns">
+                <!-- Left Column -->
+                <div class="hero-column">
+                    <h1 class="hero-title">
+                        Free online<br>screen recorder
+                    </h1>
+                    <p class="hero-description">
+                        The fast and easy way to capture high-quality videos with no watermark for free. Record your screen, webcam, and voice. Perfect for online courses and video meetings.
+                    </p>
+                    <a href="#recorder" class="btn btn-primary hero-btn" id="startRecordingBtn">
+                        Start Recorder
+                    </a>
+                    <p class="browser-support">
+                        Supported browsers: Google Chrome, Edge, Firefox
+                    </p>
+                </div>
+                
+                <!-- Right Column -->
+                <div class="hero-column">
+                    <h1 class="hero-title">
+                        Free online screen<br>recorder & editor
+                    </h1>
+                    
+                    <div>
+                        <div class="feature-item">
+                            <div class="feature-icon">✓</div>
+                            <div>Record any part of your screen with webcam overlay</div>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-icon">✓</div>
+                            <div>Easily trim, combine clips, add text, music, & more</div>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-icon">✓</div>
+                            <div>One-click save and share options for courses</div>
+                        </div>
+                    </div>
+                    
+                    <div class="recorder-interface" id="recorder">
+                        <div class="recording-status" id="recordingStatus" style="display: none;">
+                            <span class="recording-dot"></span>
+                            <span>Recording...</span>
+                            <span style="margin-left: auto; color: #D63B7D; cursor: pointer;" id="addWebcamBtn">Add Webcam</span>
+                        </div>
+                        
+                        <h3 class="recorder-title">Select recording options</h3>
+                        
+                        <div class="recorder-options">
+                            <div class="recorder-option selected" id="optionScreen">
+                                <span class="option-icon">📺</span>
+                                <span>Full screen</span>
+                            </div>
+                            
+                            <div class="recorder-option" id="optionWindow">
+                                <span class="option-icon">🔲</span>
+                                <span>Window</span>
+                            </div>
+                            
+                            <div class="recorder-option selected" id="optionMicrophone">
+                                <span class="option-icon">🎤</span>
+                                <span>Microphone</span>
+                            </div>
+                            
+                            <div class="recorder-option" id="optionSystemAudio">
+                                <span class="option-icon">🔊</span>
+                                <span>System audio</span>
+                            </div>
+                        </div>
+                        
+                        <div class="recorder-option" id="optionWebcam" style="margin-top: 10px; margin-bottom: 15px;">
+                            <span class="option-icon">📹</span>
+                            <span>Include webcam</span>
+                        </div>
+                        
+                        <button class="btn btn-primary" style="width: 100%;" id="recorderBtn">
+                            Start Recording
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Live recording interface (initially hidden) -->
+    <section id="liveRecording" style="display: none; position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
+        <div style="background: white; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); width: 320px; overflow: hidden;">
+            <!-- Preview header -->
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background: #f5f5f5; border-bottom: 1px solid #ddd;">
+                <div style="display: flex; align-items: center;">
+                    <span class="recording-dot"></span>
+                    <span style="font-weight: 500; margin-left: 5px;">LIVE PREVIEW</span>
+                </div>
+                <div>
+                    <button id="minimizePreview" style="background: none; border: none; cursor: pointer; margin-right: 5px;">
+                        <span style="font-size: 18px;">_</span>
+                    </button>
+                    <button id="closePreview" style="background: none; border: none; cursor: pointer;">
+                        <span style="font-size: 16px;">✕</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Preview content -->
+            <div style="position: relative;">
+                <!-- Main screen capture preview -->
+                <div style="aspect-ratio: 16/9; background: #222; display: flex; justify-content: center; align-items: center;">
+                    <img src="/api/placeholder/320/180" alt="Live recording preview" style="max-width: 100%; max-height: 100%;">
+                </div>
+                
+                <!-- Webcam overlay (if enabled) -->
+                <div id="webcamOverlay" style="position: absolute; bottom: 10px; right: 10px; width: 80px; height: 60px; background: #333; border: 2px solid white; border-radius: 4px; display: none; justify-content: center; align-items: center;">
+                    <img src="/api/placeholder/80/60" alt="Webcam feed" style="max-width: 100%; max-height: 100%;">
+                </div>
+                
+                <!-- Editing toolbar (hovers over the video) -->
+                <div style="position: absolute; top: 10px; left: 0; right: 0; display: flex; justify-content: center;">
+                    <div style="background: rgba(0,0,0,0.5); border-radius: 20px; padding: 5px 10px; display: flex; gap: 10px;">
+                        <button class="edit-tool" title="Take Screenshot" style="background: none; border: none; color: white; cursor: pointer; font-size: 16px;">
+                            <i style="display: inline-block; width: 16px; height: 16px; background: white; margin-bottom: -2px;"></i>
+                        </button>
+                        <button class="edit-tool" title="Add Text" style="background: none; border: none; color: white; cursor: pointer; font-size: 16px;">
+                            T
+                        </button>
+                        <button class="edit-tool" title="Draw" style="background: none; border: none; color: white; cursor: pointer; font-size: 16px;">
+                            ✎
+                        </button>
+                        <button class="edit-tool" title="Highlight Area" style="background: none; border: none; color: white; cursor: pointer; font-size: 16px;">
+                            □
+                        </button>
+                        <button class="edit-tool" title="Add Arrow" style="background: none; border: none; color: white; cursor: pointer; font-size: 16px;">
+                            →
+                        </button>
+                        <button class="edit-tool" title="Save Current Frame" style="background: none; border: none; color: white; cursor: pointer; font-size: 16px;">
+                            💾
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Controls -->
+            <div style="display: flex; padding: 10px;">
+                <button id="pauseResumeBtn" class="btn btn-outline" style="flex: 1; padding: 8px; margin-right: 5px; font-size: 14px;">
+                    Pause
+                </button>
+                <button id="stopRecordingBtn" class="btn btn-primary" style="flex: 1; padding: 8px; font-size: 14px; background-color: #d9534f;">
+                    Stop
+                </button>
+            </div>
+            
+            <!-- Additional editing controls -->
+            <div style="display: flex; padding: 0 10px 10px; gap: 8px;">
+                <button id="editCurrentBtn" class="btn btn-outline" style="flex: 1; padding: 5px; font-size: 12px;">
+                    Edit Video
+                </button>
+                <button id="addMarkerBtn" class="btn btn-outline" style="flex: 1; padding: 5px; font-size: 12px;">
+                    Add Marker
+                </button>
+            </div>
+            
+            <!-- Recording info -->
+            <div style="padding: 0 10px 10px; display: flex; justify-content: space-between; font-size: 12px; color: #666;">
+                <div id="recordingTime">00:00:00</div>
+                <div id="recordingSize">0 MB</div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Minimized indicator (initially hidden) -->
+    <div id="minimizedIndicator" style="display: none; position: fixed; bottom: 20px; right: 20px; background: rgba(214, 59, 125, 0.9); color: white; padding: 8px 15px; border-radius: 30px; cursor: pointer; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.2);">
+        <div style="display: flex; align-items: center;">
+            <span class="recording-dot"></span>
+            <span style="margin-left: 5px; font-weight: 500;">Recording - Click to show preview</span>
+        </div>
+    </div>
+    
+    <!-- Recording results section (hidden initially) -->
+    <section id="recordingResult" style="display: none; padding: 30px 0; background-color: #f9f9f9;">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 30px;">Your Recording</h2>
+            
+            <div style="background: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                <div style="background: #000; border-radius: 8px; overflow: hidden; position: relative; aspect-ratio: 16/9; margin-bottom: 20px;">
+                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">
+                        <img src="/api/placeholder/640/360" alt="Recording preview" style="max-width: 100%; max-height: 100%;">
+                        <div style="position: absolute; bottom: 15px; right: 15px; width: 120px; height: 90px; background: #333; border: 2px solid white; border-radius: 5px; display: flex; justify-content: center; align-items: center;">
+                            <img src="/api/placeholder/120/90" alt="Webcam preview" style="max-width: 100%; max-height: 100%;">
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+                    <button class="btn btn-primary" style="flex: 1;" id="downloadBtn">Download MP4</button>
+                    <button class="btn btn-outline" style="flex: 1;" id="shareBtn">Share Link</button>
+                </div>
+                
+                <div>
+                    <h3 style="margin-bottom: 15px;">Edit Recording</h3>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px;">
+                        <button class="btn btn-outline" style="text-align: left; padding: 10px;">
+                            <span style="display: block; font-weight: bold;">Trim Video</span>
+                            <span style="font-size: 12px;">Cut unwanted parts</span>
+                        </button>
+                        
+                        <button class="btn btn-outline" style="text-align: left; padding: 10px;">
+                            <span style="display: block; font-weight: bold;">Add Text</span>
+                            <span style="font-size: 12px;">Titles and annotations</span>
+                        </button>
+                        
+                        <button class="btn btn-outline" style="text-align: left; padding: 10px;">
+                            <span style="display: block; font-weight: bold;">Add Music</span>
+                            <span style="font-size: 12px;">Background soundtrack</span>
+                        </button>
+                        
+                        <button class="btn btn-outline" style="text-align: left; padding: 10px;">
+                            <span style="display: block; font-weight: bold;">Generate Captions</span>
+                            <span style="font-size: 12px;">AI-powered subtitles</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Modal -->
+    <div class="modal" id="permissionModal">
+        <div class="modal-content">
+            <h2 style="margin-top: 0;">Grant Screen Recording Permissions</h2>
+            <p>To start recording, please grant the following permissions:</p>
+            <ul style="margin-left: 20px;">
+                <li>Screen sharing permission</li>
+                <li>Microphone permission (if selected)</li>
+            </ul>
+            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                <button class="btn btn-outline" id="modalCancel">Cancel</button>
+                <button class="btn btn-primary" id="modalConfirm">Continue</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Simple direct implementation with live preview
+        let recordingInterval;
+        let recordingSeconds = 0;
+        let recordingPaused = false;
+        let estimatedSize = 0;
+        
+        // Format time as HH:MM:SS
+        function formatTime(seconds) {
+            const h = Math.floor(seconds / 3600);
+            const m = Math.floor((seconds % 3600) / 60);
+            const s = seconds % 60;
+            return [h, m, s].map(v => v < 10 ? "0" + v : v).join(":");
+        }
+        
+        // Start recording function
+        function startRecording() {
+            // Show recording indicator
+            document.getElementById('recordingStatus').style.display = 'flex';
+            
+            // Show live preview
+            document.getElementById('liveRecording').style.display = 'block';
+            
+            // Show webcam if selected
+            if (document.getElementById('optionWebcam').classList.contains('selected')) {
+                document.getElementById('webcamOverlay').style.display = 'flex';
+            }
+            
+            // Start timer and size estimation
+            recordingSeconds = 0;
+            estimatedSize = 0;
+            recordingInterval = setInterval(function() {
+                if (!recordingPaused) {
+                    recordingSeconds++;
+                    // Rough estimate: ~2MB per minute at medium quality
+                    estimatedSize = (recordingSeconds / 60) * 2;
+                    
+                    document.getElementById('recordingTime').textContent = formatTime(recordingSeconds);
+                    document.getElementById('recordingSize').textContent = estimatedSize.toFixed(1) + ' MB';
+                }
+            }, 1000);
+        }
+        
+        // Stop recording function
+        function stopRecording() {
+            // Clear timer
+            clearInterval(recordingInterval);
+            
+            // Hide live preview and recording status
+            document.getElementById('liveRecording').style.display = 'none';
+            document.getElementById('minimizedIndicator').style.display = 'none';
+            document.getElementById('recordingStatus').style.display = 'none';
+            
+            // Show recording result section
+            document.getElementById('recordingResult').style.display = 'block';
+            
+            // Scroll to results
+            document.getElementById('recordingResult').scrollIntoView({behavior: 'smooth'});
+            
+            // Reset recorder button
+            const recorderBtn = document.getElementById('recorderBtn');
+            recorderBtn.textContent = 'Start Recording';
+            recorderBtn.style.backgroundColor = '#D63B7D';
+            recorderBtn.onclick = startRecordingHandler;
+        }
+        
+        // Start recording button handler
+        function startRecordingHandler() {
+            alert('Recording starting! In a real application, this would request permissions and start recording your screen with live preview.');
+            
+            // Change button text and color
+            this.textContent = 'Stop Recording';
+            this.style.backgroundColor = '#d9534f';
+            
+            // Start recording
+            startRecording();
+            
+            // Change button function to stop recording on next click
+            this.onclick = stopRecording;
+        }
+        
+        // Initialize main recording button
+        document.getElementById('recorderBtn').addEventListener('click', startRecordingHandler);
+        
+        // Add webcam during recording
+        document.getElementById('addWebcamBtn').addEventListener('click', function() {
+            alert('Webcam activated! In a real application, this would enable your webcam and overlay it on the recording.');
+            document.getElementById('webcamOverlay').style.display = 'flex';
+        });
+        
+        // Make recording options clickable
+        document.getElementById('optionScreen').addEventListener('click', function() {
+            this.classList.add('selected');
+            document.getElementById('optionWindow').classList.remove('selected');
+        });
+        
+        document.getElementById('optionWindow').addEventListener('click', function() {
+            this.classList.add('selected');
+            document.getElementById('optionScreen').classList.remove('selected');
+        });
+        
+        document.getElementById('optionMicrophone').addEventListener('click', function() {
+            this.classList.toggle('selected');
+        });
+        
+        document.getElementById('optionSystemAudio').addEventListener('click', function() {
+            this.classList.toggle('selected');
+        });
+        
+        document.getElementById('optionWebcam').addEventListener('click', function() {
+            this.classList.toggle('selected');
+        });
+        
+        // Make the top button scroll to recorder section
+        document.getElementById('startRecordingBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('recorder').scrollIntoView({behavior: 'smooth'});
+        });
+        
+        // Live preview controls
+        document.getElementById('pauseResumeBtn').addEventListener('click', function() {
+            recordingPaused = !recordingPaused;
+            if (recordingPaused) {
+                this.textContent = 'Resume';
+                document.getElementById('recordingTime').style.color = '#d9534f';
+            } else {
+                this.textContent = 'Pause';
+                document.getElementById('recordingTime').style.color = '#666';
+            }
+        });
+        
+        document.getElementById('stopRecordingBtn').addEventListener('click', stopRecording);
+        
+        // Edit current video button
+        document.getElementById('editCurrentBtn').addEventListener('click', function() {
+            alert('Opening video editor. In a real application, this would open a more comprehensive editing interface while continuing to record.');
+        });
+        
+        // Add marker button (for creating chapters/sections)
+        document.getElementById('addMarkerBtn').addEventListener('click', function() {
+            alert('Marker added at ' + document.getElementById('recordingTime').textContent + '. In a real application, this would create a chapter marker at this timestamp.');
+        });
+        
+        // Screenshot and editing tools
+        document.querySelectorAll('.edit-tool').forEach(function(tool, index) {
+            tool.addEventListener('click', function() {
+                const tools = ['Take Screenshot', 'Add Text', 'Draw', 'Highlight Area', 'Add Arrow', 'Save Current Frame'];
+                alert(tools[index] + ' tool activated. In a real application, you would now be able to ' + 
+                      tools[index].toLowerCase() + ' directly on your recording.');
+            });
+        });
+        
+        // Minimize/maximize preview
+        document.getElementById('minimizePreview').addEventListener('click', function() {
+            document.getElementById('liveRecording').style.display = 'none';
+            document.getElementById('minimizedIndicator').style.display = 'block';
+        });
+        
+        document.getElementById('minimizedIndicator').addEventListener('click', function() {
+            this.style.display = 'none';
+            document.getElementById('liveRecording').style.display = 'block';
+        });
+        
+        document.getElementById('closePreview').addEventListener('click', function() {
+            if (confirm('Are you sure you want to close the preview? Recording will continue in the background.')) {
+                document.getElementById('liveRecording').style.display = 'none';
+                document.getElementById('minimizedIndicator').style.display = 'block';
+            }
+        });
+        
+        // Download and share buttons
+        document.getElementById('downloadBtn').addEventListener('click', function() {
+            alert('In a real application, this would download your recording as an MP4 file to your device.');
+        });
+        
+        document.getElementById('shareBtn').addEventListener('click', function() {
+            const shareLink = 'https://screeners.online/s/abc123';
+            alert('Share this link with your students or colleagues:\n' + shareLink + '\n\nIn a real application, this would generate a unique link to access your recording.');
+        });
+    </script>
+</body>
+</html>
